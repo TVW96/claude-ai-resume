@@ -84,3 +84,104 @@ test("dates are wrapped in time tags", async ({ page }) => {
   }
 });
 
+test.describe("Normal cases (typical expected behavior)", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
+
+  test("page has the correct title and language", async ({ page }) => {
+    await expect(page).toHaveTitle("Troy Washington — Full-Stack Engineer");
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  });
+
+  test("section nav links point to real in-page sections", async ({ page }) => {
+    const hrefs = await page
+      .locator(".section-nav a")
+      .evaluateAll((links) => links.map((link) => link.getAttribute("href")));
+
+    expect(hrefs).toEqual(["#experience", "#education", "#skills"]);
+
+    for (const href of hrefs) {
+      await expect(page.locator(href)).toHaveCount(1);
+    }
+  });
+
+  test("contact links use correct mailto and tel protocols", async ({ page }) => {
+    await expect(page.locator('a[href="mailto:Troyvw96@gmail.com"]')).toHaveCount(2);
+    await expect(page.locator('a[href="tel:+12062404700"]')).toHaveCount(2);
+  });
+
+  test("each experience article has a heading and an achievements list", async ({ page }) => {
+    const articles = page.locator("#experience article");
+    const count = await articles.count();
+
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const article = articles.nth(i);
+      await expect(article.locator("h3")).toHaveCount(1);
+      await expect(article.locator("ul.bullets li").first()).toBeVisible();
+    }
+  });
+});
+
+test.describe("Edge cases (boundary and non-standard conditions)", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
+
+  test("does not overflow at a 320px mobile viewport", async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+
+    const dimensions = await page.evaluate(() => ({
+      viewportWidth: document.documentElement.clientWidth,
+      contentWidth: document.documentElement.scrollWidth
+    }));
+
+    expect(dimensions.contentWidth).toBeLessThanOrEqual(dimensions.viewportWidth);
+  });
+
+  test("does not overflow at a 2560px ultra-wide viewport", async ({ page }) => {
+    await page.setViewportSize({ width: 2560, height: 1440 });
+
+    const dimensions = await page.evaluate(() => ({
+      viewportWidth: document.documentElement.clientWidth,
+      contentWidth: document.documentElement.scrollWidth
+    }));
+
+    expect(dimensions.contentWidth).toBeLessThanOrEqual(dimensions.viewportWidth);
+  });
+
+  test("disables smooth scrolling when prefers-reduced-motion is set", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+
+    const scrollBehavior = await page.evaluate(
+      () => getComputedStyle(document.documentElement).scrollBehavior
+    );
+
+    expect(scrollBehavior).toBe("auto");
+  });
+
+  test("decorative terminal-bar dots are hidden from assistive technology", async ({ page }) => {
+    await expect(page.locator(".terminal-bar")).toHaveAttribute("aria-hidden", "true");
+  });
+
+  test("print styles hide the skip link and section navigation", async ({ page }) => {
+    await page.emulateMedia({ media: "print" });
+
+    await expect(page.locator(".skip-link")).toHaveCSS("display", "none");
+    await expect(page.locator(".section-nav")).toHaveCSS("display", "none");
+    await expect(page.locator(".terminal-bar")).toHaveCSS("display", "none");
+  });
+});
+
+test("edge case: core resume content still renders with JavaScript disabled", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+
+  await page.goto("/");
+  await expect(page.locator("h1")).toHaveText("Troy Washington");
+
+  await context.close();
+});
+
