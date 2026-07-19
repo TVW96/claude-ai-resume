@@ -25,22 +25,22 @@ test("navigation uses flexbox", async ({ page }) => {
   expect(display).toBe("flex");
 });
 
-test("grid uses CSS Grid", async ({ page }) => {
-  const grid = page.locator(".product-grid");
+test("loads the resume stylesheet", async ({ page }) => {
+  await expect(
+    page.locator('link[rel="stylesheet"][href="css/styles.css"]')
+  ).toHaveCount(1);
+});
 
-  if (await grid.count()) {
-    const display = await grid.evaluate(
-      (element) => getComputedStyle(element).display
-    );
+test("skills grid uses CSS Grid", async ({ page }) => {
+  const grid = page.locator(".skills-grid");
 
-    expect(display).toBe("grid");
-  }
+  await expect(grid).toHaveCSS("display", "grid");
 });
 
 test("heading hierarchy starts with h1 for name", async ({ page }) => {
   const h1 = page.locator("h1").first();
 
-  expect(h1).toBeVisible();
+  await expect(h1).toBeVisible();
 });
 
 test("major sections use h2 headings", async ({ page }) => {

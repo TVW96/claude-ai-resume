@@ -3,7 +3,16 @@
   "version": "1.0.0",
   "description": "| Package | Purpose | |---------|----------| | `@playwright/test` | End-to-end testing, responsive testing, visual regression, cross-browser testing | | `http-server` | Lightweight local development server used during testing |",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "http-server . -p 4173 -c-1",
+    "lint": "eslint css/styles.css",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "playwright test tests/layout.spec.js",
+    "test:chromium": "playwright test tests/layout.spec.js --project=chromium",
+    "test:headed": "playwright test tests/layout.spec.js --headed",
+    "test:ui": "playwright test tests/layout.spec.js --ui",
+    "test:report": "playwright show-report"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TVW96/claude-ai-resume.git"
@@ -22,6 +31,7 @@
     "@playwright/test": "^1.61.1",
     "@types/node": "^26.1.1",
     "eslint": "^10.7.0",
-    "globals": "^17.7.0"
+    "globals": "^17.7.0",
+    "http-server": "^14.1.1"
   }
 }
