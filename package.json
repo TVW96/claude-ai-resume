@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/TVW96/claude-ai-resume#readme",
   "devDependencies": {
+    "@eslint/css": "^1.4.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.61.1",
     "@types/node": "^26.1.1",
