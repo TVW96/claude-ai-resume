@@ -1,0 +1,23 @@
+{
+  "name": "claude-ai-resume",
+  "version": "1.0.0",
+  "description": "| Package | Purpose | |---------|----------| | `@playwright/test` | End-to-end testing, responsive testing, visual regression, cross-browser testing | | `http-server` | Lightweight local development server used during testing |",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TVW96/claude-ai-resume.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TVW96/claude-ai-resume/issues"
+  },
+  "homepage": "https://github.com/TVW96/claude-ai-resume#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1"
+  }
+}
