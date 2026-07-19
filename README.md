@@ -1,5 +1,9 @@
 # claude-ai-resume
 
+https://github.com/user-attachments/assets/6b26080d-e2ca-4f8e-8c05-fbeaa43a9cad
+
+
+
 # Project Dependencies
 
 ## Core Testing Framework
