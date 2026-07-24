@@ -10,7 +10,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: cloudflare-production
+      name: production
       url: https://claude-ai-resume.pages.dev
     permissions:
       contents: read
