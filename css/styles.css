@@ -76,7 +76,7 @@ a:hover { color: var(--accent-2); }
   width: 1px;
   height: 1px;
   overflow: hidden;
-  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 
@@ -381,6 +381,7 @@ main {
   .section-nav ul {
     overflow-x: auto;
     -ms-overflow-style: none;
+    /* eslint-disable-next-line css/use-baseline -- scrollbar-width is intentional for Firefox cross-browser compat */
     scrollbar-width: none;
   }
   .section-nav ul::-webkit-scrollbar { display: none; }
@@ -395,6 +396,7 @@ main {
 
 /* ---------- Motion ---------- */
 @media (prefers-reduced-motion: reduce) {
+  /* eslint-disable-next-line css/no-important -- required to override html { scroll-behavior: smooth } for a11y */
   * { scroll-behavior: auto !important; }
 }
 html {
