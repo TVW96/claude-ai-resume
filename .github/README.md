@@ -11,12 +11,12 @@ This directory contains deployment documentation for the claude-ai-resume projec
 
 ## 🚀 Deployment Overview
 
-This project deploys to two platforms, both via native Git integration — no GitHub Actions workflow is involved in deployment:
+This project deploys to two platforms via native Git integration:
 
 - **Cloudflare Workers** — auto-deploys from `main` via Cloudflare Workers Builds (Git integration), running `npx wrangler deploy` to serve the static site as Worker assets. See [CLOUDFLARE_GIT_INTEGRATION.md](CLOUDFLARE_GIT_INTEGRATION.md).
 - **Netlify** — auto-deploys from `main` via Netlify's Git integration, configured in [`netlify.toml`](../netlify.toml).
 
-Both deployments are tracked under a single GitHub `production` environment (Settings → Environments → `production`), which lists both live URLs. No repository or environment secrets are required for deployment since neither platform depends on GitHub Actions.
+Both deployments are tracked under a single GitHub `production` environment (Settings → Environments → `production`), which lists both live URLs. The `Playwright Tests` workflow records the Cloudflare and Netlify production URLs after `main` branch tests pass, but the actual deployments still happen in Cloudflare and Netlify through their own Git integrations.
 
 📖 **Full guide:** [CLOUDFLARE_GIT_INTEGRATION.md](CLOUDFLARE_GIT_INTEGRATION.md)
 
@@ -30,7 +30,7 @@ Both deployments are tracked under a single GitHub `production` environment (Set
 - Cloudflare Workers: `https://claude-ai-resume.troyvw96.workers.dev`
 - Netlify: `https://famous-cascaron-ee40a2.netlify.app`
 
-**Required Secrets:** None — both platforms deploy via their own native Git integration, not GitHub Actions.
+**Required Secrets:** None — both platforms deploy via their own native Git integration, and the GitHub Actions workflow only tracks their production URLs.
 
 ## 🔍 Monitoring Deployments
 

@@ -1,6 +1,6 @@
 # Cloudflare Workers Builds (Git Integration) Setup
 
-This project is a Cloudflare **Workers** application (deployed via `wrangler deploy` with static assets), built and deployed automatically by **Workers Builds** — Cloudflare's native Git integration. No GitHub Actions workflow is involved.
+This project is a Cloudflare **Workers** application (deployed via `wrangler deploy` with static assets), built and deployed automatically by **Workers Builds** — Cloudflare's native Git integration. GitHub Actions tracks the production URLs in the repository environment, but it does not deploy the Worker itself.
 
 > **Note:** Despite the project living in the Workers & Pages dashboard, this is *not* a Cloudflare Pages project. The Workers Builds CI pipeline only provisions an API token scoped for Workers deployments, so the deploy command must be `npx wrangler deploy`, never `npx wrangler pages deploy` (that fails with an authentication error).
 
@@ -26,7 +26,7 @@ Once complete, the site is available at your Workers subdomain, e.g. `https://cl
 
 ## Production Environment
 
-Both this Cloudflare Worker and Netlify deploy from the same `main` branch and are tracked under a single GitHub `production` environment (Settings → Environments → `production`) so both live URLs are visible from the repository. No GitHub secrets are required for either platform since deployments are driven entirely by each platform's own Git integration.
+Both this Cloudflare Worker and Netlify deploy from the same `main` branch and are tracked under a single GitHub `production` environment (Settings → Environments → `production`) so both live URLs are visible from the repository. The `Playwright Tests` workflow records one production deployment entry per platform after tests pass on `main`, while the actual deployments are still driven entirely by each platform's own Git integration.
 
 ## Preview Deployments
 
