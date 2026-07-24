@@ -4,6 +4,10 @@ https://github.com/user-attachments/assets/6b26080d-e2ca-4f8e-8c05-fbeaa43a9cad
 
 A personal resume website with automated testing and quality assurance.
 
+## Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for production URLs and setup.
+
 ---
 
 ## Development Dependencies
