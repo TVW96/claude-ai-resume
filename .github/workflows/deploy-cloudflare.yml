@@ -1,0 +1,32 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: cloudflare-production
+      url: https://claude-ai-resume.pages.dev
+    permissions:
+      contents: read
+      deployments: write
+    
+    name: Deploy to Cloudflare Pages
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: claude-ai-resume
+          directory: .
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
