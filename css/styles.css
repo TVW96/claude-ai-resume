@@ -381,8 +381,6 @@ main {
   .section-nav ul {
     overflow-x: auto;
     -ms-overflow-style: none;
-    /* eslint-disable-next-line css/use-baseline -- scrollbar-width is intentional for Firefox cross-browser compat */
-    scrollbar-width: none;
   }
   .section-nav ul::-webkit-scrollbar { display: none; }
 }
@@ -395,12 +393,11 @@ main {
 }
 
 /* ---------- Motion ---------- */
-@media (prefers-reduced-motion: reduce) {
-  /* eslint-disable-next-line css/no-important -- required to override html { scroll-behavior: smooth } for a11y */
-  * { scroll-behavior: auto !important; }
-}
 html {
   scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto; }
 }
 
 /* ---------- Print ---------- */
