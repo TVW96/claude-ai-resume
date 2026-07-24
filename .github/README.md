@@ -1,115 +1,42 @@
 # Deployment Configuration
 
-This directory contains deployment documentation and workflow configurations for the claude-ai-resume project.
+This directory contains deployment documentation for the claude-ai-resume project.
 
 ## 📁 Contents
 
-### Workflow Files
-- **`workflows/deploy-cloudflare.yml`** - GitHub Actions workflow for automated Cloudflare Pages deployment
+- **[CLOUDFLARE_GIT_INTEGRATION.md](CLOUDFLARE_GIT_INTEGRATION.md)** - Cloudflare Pages Git integration setup
+  - Native Cloudflare Pages Git integration setup
+  - Automatic PR preview deployments
+  - Custom domains and rollback
 
-### Documentation
+## 🚀 Deployment Overview
 
-#### Primary Guides
-1. **[GITHUB_ENVIRONMENT_SETUP.md](GITHUB_ENVIRONMENT_SETUP.md)** - GitHub Environment configuration
-   - How to create the `cloudflare-production` environment
-   - Setting up environment secrets
-   - Configuring protection rules
-   - Monitoring deployments
+This project deploys to two platforms, both via native Git integration — no GitHub Actions workflow is involved in deployment:
 
-2. **[CLOUDFLARE_GIT_INTEGRATION.md](CLOUDFLARE_GIT_INTEGRATION.md)** - Cloudflare Git integration
-   - Native Cloudflare Pages Git integration setup
-   - Automatic PR preview deployments
-   - Comparison with GitHub Actions approach
-   - Step-by-step integration guide
+- **Cloudflare Pages** — auto-deploys from `main` via Cloudflare's Git integration. See [CLOUDFLARE_GIT_INTEGRATION.md](CLOUDFLARE_GIT_INTEGRATION.md).
+- **Netlify** — auto-deploys from `main` via Netlify's Git integration, configured in [`netlify.toml`](../netlify.toml).
 
-## 🚀 Quick Start
-
-### For GitHub Actions Deployment
-
-1. **Create GitHub Environment:**
-   ```
-   Settings → Environments → New environment → "cloudflare-production"
-   ```
-
-2. **Add Environment Secrets:**
-   - `CLOUDFLARE_API_TOKEN`
-   - `CLOUDFLARE_ACCOUNT_ID`
-
-3. **Configure Protection (Optional):**
-   - Restrict to `main` branch
-   - Add required reviewers
-   - Set wait timer
-
-4. **Push to main:**
-   Workflow automatically deploys!
-
-📖 **Full guide:** [GITHUB_ENVIRONMENT_SETUP.md](GITHUB_ENVIRONMENT_SETUP.md)
-
----
-
-### For Cloudflare Git Integration (Alternative)
-
-1. **Connect to Cloudflare:**
-   - Go to Cloudflare Dashboard → Workers & Pages
-   - Click "Connect to Git"
-   - Authorize GitHub access
-
-2. **Select Repository:**
-   - Choose `TVW96/claude-ai-resume`
-   - Configure build settings
-   - Deploy!
+Both deployments are tracked under a single GitHub `production` environment (Settings → Environments → `production`), which lists both live URLs. No repository or environment secrets are required for deployment since neither platform depends on GitHub Actions.
 
 📖 **Full guide:** [CLOUDFLARE_GIT_INTEGRATION.md](CLOUDFLARE_GIT_INTEGRATION.md)
 
 ---
 
-## 🎯 Deployment Methods Comparison
+## 📋 Production Environment
 
-| Feature | GitHub Actions + Environment | Cloudflare Git Integration |
-|---------|------------------------------|---------------------------|
-| **Setup Complexity** | Moderate (YAML + Environment) | Simple (UI-based) |
-| **PR Preview Deployments** | ⚠️ Requires config | ✅ Automatic |
-| **Build Logs** | GitHub Actions tab | Cloudflare Dashboard |
-| **Deployment Control** | GitHub Environments | Cloudflare Dashboard |
-| **Custom Build Steps** | ✅ Full flexibility | Limited |
-| **Protection Rules** | ✅ GitHub-native | Manual in Cloudflare |
-| **Cost** | Free (GitHub Actions) | Free (Cloudflare Pages) |
-| **Current Status** | ✅ Configured | 📋 Available option |
+**Environment Name:** `production`
 
-## 📋 Environment Configuration
+**Production URLs:**
+- Cloudflare Pages: `https://claude-ai-resume.pages.dev`
+- Netlify: see [DEPLOYMENT.md](../DEPLOYMENT.md)
 
-### Current Environment Setup
-
-**Environment Name:** `cloudflare-production`
-
-**Environment URL:** `https://claude-ai-resume.pages.dev`
-
-**Required Secrets:**
-- `CLOUDFLARE_API_TOKEN` - Cloudflare API token with Pages edit permission
-- `CLOUDFLARE_ACCOUNT_ID` - Your Cloudflare account ID
-
-**Protection Rules:**
-- Deployment branches: `main` (recommended)
-- Required reviewers: Optional
-- Wait timer: Optional
-
-### Workflow Triggers
-
-The deployment workflow runs on:
-- **Automatic:** Push to `main` branch
-- **Manual:** Workflow dispatch from Actions tab
+**Required Secrets:** None — both platforms deploy via their own native Git integration, not GitHub Actions.
 
 ## 🔍 Monitoring Deployments
 
 ### GitHub UI
-1. Repository → **Environments** → `cloudflare-production`
-2. View deployment history, status, and logs
-3. Click environment URL for instant access
-
-### GitHub Actions
-1. Repository → **Actions** tab
-2. Select "Deploy to Cloudflare Pages" workflow
-3. View detailed logs and status
+1. Repository → **Environments** → `production`
+2. View both deployment URLs
 
 ### Cloudflare Dashboard
 1. [Cloudflare Dashboard](https://dash.cloudflare.com/)
@@ -117,24 +44,21 @@ The deployment workflow runs on:
 3. Select `claude-ai-resume` project
 4. View deployments, analytics, and settings
 
+### Netlify Dashboard
+1. [Netlify Dashboard](https://app.netlify.com/)
+2. Select the site
+3. View deploy logs and history
+
 ## 🛠️ Troubleshooting
 
-### Environment Issues
-- **Environment not found:** Ensure name is exactly `cloudflare-production`
-- **Secrets not working:** Verify secrets are in environment (not repository)
-- **Protection blocking:** Check for pending reviewers or wait timers
+### Cloudflare Deployment Failures
+- **Build/deploy command wrong:** Ensure the Cloudflare project's deploy command is `npx wrangler pages deploy .` (not `npx wrangler deploy`)
+- **Project not found:** Confirm the project exists in the correct Cloudflare account and the name matches exactly
 
-### Deployment Failures
-- **API token invalid:** Regenerate token with correct permissions
-- **Account ID wrong:** Verify from Cloudflare Dashboard URL
-- **Workflow errors:** Check Actions tab for detailed logs
+### Netlify Deployment Failures
+- Check build settings against [`netlify.toml`](../netlify.toml)
 
 ## 📚 Additional Resources
-
-### GitHub Documentation
-- [Using Environments for Deployment](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment)
-- [Environment Protection Rules](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment#deployment-protection-rules)
-- [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
 
 ### Cloudflare Documentation
 - [Cloudflare Pages Overview](https://developers.cloudflare.com/pages/)
@@ -142,35 +66,9 @@ The deployment workflow runs on:
 - [Build Configuration](https://developers.cloudflare.com/pages/platform/build-configuration/)
 - [Deploy Hooks](https://developers.cloudflare.com/pages/platform/deploy-hooks/)
 
-### GitHub Actions
-- [Cloudflare Pages Action](https://github.com/cloudflare/pages-action)
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-
-## ✨ Recommended Setup
-
-For this personal resume project, we recommend:
-
-1. **Primary: GitHub Actions with Environment**
-   - ✅ Better integration with GitHub workflow
-   - ✅ Environment-based deployment tracking
-   - ✅ Protection rules for safety
-   - ✅ Already configured and ready to use
-
-2. **Optional: Add Cloudflare Git Integration**
-   - ✅ Get automatic PR previews
-   - ✅ Dual deployment paths for redundancy
-   - ✅ Leverage Cloudflare's built-in features
-
-Both methods can coexist - use GitHub Actions for main deployments and Cloudflare Git integration for PR previews!
-
-## 🎉 Next Steps
-
-1. ✅ Create GitHub Environment `cloudflare-production`
-2. ✅ Add environment secrets
-3. ✅ Merge PR to trigger first deployment
-4. ✅ Verify deployment in Environments page
-5. ⭐ (Optional) Set up Cloudflare Git integration for PR previews
+### Netlify Documentation
+- [Netlify Docs](https://docs.netlify.com/)
 
 ---
 
-**Status:** ✅ Configured and ready to deploy!
+**Status:** ✅ Configured and deploying via native Git integrations!

@@ -10,9 +10,9 @@ This project is deployed to multiple platforms:
 ## Setup
 
 ### Cloudflare Pages
-- Automatically deployed via GitHub Actions workflow (`.github/workflows/deploy-cloudflare.yml`)
+- Automatically deployed via Cloudflare's native Git integration (see [.github/CLOUDFLARE_GIT_INTEGRATION.md](.github/CLOUDFLARE_GIT_INTEGRATION.md))
 - Deploys on every push to `main` branch
-- Requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets
+- No GitHub secrets required
 
 ### Netlify
 - Automatically deployed via Netlify Git integration
@@ -21,7 +21,6 @@ This project is deployed to multiple platforms:
 
 ## GitHub Environment
 
-Both deployment URLs are documented in the `production` environment:
-- Go to: Repository Settings → Environments → production
-- The primary URL (Cloudflare) is set in the workflow
-- Additional URLs can be added in the environment description
+Both deployment URLs are documented in a single `production` environment:
+- Go to: Repository Settings → Environments → `production`
+- This environment tracks both the Cloudflare and Netlify deployments for this project
