@@ -310,3 +310,239 @@ To use a custom domain:
 1. Go to Site settings → Domain management
 2. Click "Add custom domain"
 3. Follow the instructions to configure your DNS settings
+
+---
+
+# GitHub Integration & Environment Configuration
+
+## Recommended Integration Method
+
+**Use Netlify's Native GitHub Integration (Recommended)**
+
+This is the simplest and most robust approach for static sites:
+- No GitHub secrets or environment variables required
+- Automatic deployment status checks on pull requests
+- Built-in deploy previews for all PRs
+- Rollback capability through Netlify's dashboard
+
+### Setup Steps:
+1. Connect repository through Netlify's dashboard (already covered above)
+2. Netlify automatically creates webhooks in your GitHub repository
+3. All deployments are managed through Netlify's platform
+
+### What NOT to do:
+- ❌ Don't manually configure GitHub Actions for deployment (unnecessary overhead)
+- ❌ Don't store Netlify tokens in GitHub Secrets (not needed for native integration)
+- ❌ Don't create custom deployment scripts
+
+---
+
+## GitHub Environment Configuration
+
+### Setting Up a Production Environment
+
+1. **Navigate to Repository Settings**
+   - Go to your repository → Settings → Environments
+   - Click "New environment" or select existing environment
+
+2. **Create "production" Environment**
+   - Name: `production`
+   - Click "Configure environment"
+
+3. **Add Environment URL**
+   - **Environment URL**: Your Netlify deployment URL
+   - Example: `https://your-site-name.netlify.app`
+   - This URL appears in deployment logs and provides quick access
+
+4. **Purpose of GitHub Environments**
+   - **Documentation**: Quick reference to deployment URLs
+   - **Protection Rules**: Control who can deploy and when
+   - **Visibility**: Track deployment history in GitHub's UI
+   - **Integration**: Link deployments to specific commits/PRs
+
+### Important Notes:
+- The environment URL in GitHub is for **documentation only**
+- It does NOT trigger or configure actual deployments
+- Actual deployment happens through Netlify's Git integration
+- This is different from GitHub Secrets (which store sensitive credentials)
+
+---
+
+## GitHub Repository Protection Rules
+
+### Branch Protection Rules (Recommended)
+
+Protect your `main` branch to ensure code quality:
+
+1. **Navigate to Branch Settings**
+   - Repository → Settings → Branches → Add branch protection rule
+   - Branch name pattern: `main`
+
+2. **Recommended Protection Rules**
+
+   ✅ **Require pull request reviews before merging**
+   - Require 1 approval (or more for team projects)
+   - Dismiss stale pull request approvals when new commits are pushed
+   - Require review from Code Owners (if applicable)
+
+   ✅ **Require status checks to pass before merging**
+   - Require branches to be up to date before merging
+   - Status checks to require:
+     - ✅ `Playwright Tests` (your existing GitHub Actions workflow)
+     - ✅ `netlify/...` (Netlify's deployment preview check - appears after first deployment)
+
+   ✅ **Require conversation resolution before merging**
+   - Ensures all review comments are addressed
+
+   ✅ **Do not allow bypassing the above settings**
+   - Applies to administrators too (recommended for personal projects to maintain discipline)
+
+   ⚠️ **Optional but Recommended:**
+   - Require linear history (prevents merge commits, enforces rebasing)
+   - Require signed commits (for security-conscious projects)
+
+3. **Apply Changes**
+   - Click "Create" or "Save changes"
+
+### Environment Protection Rules (Optional)
+
+For production environments requiring manual approval:
+
+1. **Navigate to Environment Settings**
+   - Repository → Settings → Environments → Select `production`
+
+2. **Protection Rules**
+
+   **Required Reviewers**
+   - Add yourself or team members who must approve deployments
+   - Useful for: Manual verification before production releases
+   - Note: With Netlify's auto-deployment, this mainly serves as a gate for manual actions
+
+   **Wait Timer**
+   - Add a delay before deployment (e.g., 5 minutes)
+   - Gives you time to cancel if needed
+   - Less useful for static sites with instant rollback capability
+
+   **Deployment Branches**
+   - Limit which branches can deploy to this environment
+   - For production: Only allow `main` branch
+   - Prevents accidental production deployments from feature branches
+
+3. **When to Use Environment Protection**
+   - ✅ Multi-person teams requiring approval workflows
+   - ✅ Production environments handling sensitive data
+   - ❌ Personal projects with instant rollback capability (usually unnecessary)
+   - ❌ Static sites without backend/database (low risk)
+
+---
+
+## Deployment Workflow Best Practices
+
+### For This Static Site
+
+1. **Development Workflow**
+   ```
+   feature branch → create PR → Playwright tests run → Netlify creates preview
+   → review changes → merge to main → auto-deploy to production
+   ```
+
+2. **Quality Gates** (Already Configured)
+   - ✅ Playwright tests via GitHub Actions
+   - ✅ ESLint for CSS validation
+   - ✅ Netlify's deploy preview for visual verification
+
+3. **Recommended Additions**
+   - Add branch protection requiring Playwright tests to pass
+   - Require 1 PR review before merging to main
+   - Enable Netlify's deploy preview comments on PRs
+
+### Deployment Status Checks
+
+After first Netlify deployment, you'll see these checks on PRs:
+- `netlify/[site-name]/deploy-preview` - Preview deployment status
+- `Playwright Tests` - Your existing test suite
+
+Both should be required to pass before merging.
+
+---
+
+## Security Best Practices
+
+### Environment Variables
+
+**For this static HTML site**: No environment variables needed
+
+**If you add dynamic features later:**
+- Store secrets in Netlify's dashboard (Site settings → Environment variables)
+- Never commit secrets to GitHub
+- Use different values for deploy previews vs. production
+- Netlify's environment variables are automatically injected at build time
+
+### GitHub Secrets vs. Netlify Environment Variables
+
+| Feature | GitHub Secrets | Netlify Environment Variables |
+|---------|---------------|-------------------------------|
+| **Purpose** | GitHub Actions workflows | Build-time injection in Netlify |
+| **When needed** | Custom deployment scripts | Dynamic site features (APIs, etc.) |
+| **This project** | ❌ Not needed | ❌ Not needed (static site) |
+| **Access** | Only in GitHub Actions | Only during Netlify builds |
+
+### Security Checklist
+
+- ✅ `netlify.toml` configured with security headers
+- ✅ No secrets in repository code
+- ✅ HTTPS enforced by Netlify (automatic)
+- ✅ Branch protection rules applied
+- ✅ Status checks required before merge
+- ✅ Deploy previews isolated per PR
+
+---
+
+## Troubleshooting
+
+### Common Integration Issues
+
+**Issue**: Netlify isn't deploying on push to main
+- **Solution**: Check Netlify's Site settings → Build & deploy → Deploy contexts
+- Ensure "Production branch" is set to `main`
+
+**Issue**: Deploy previews not appearing on PRs
+- **Solution**: Check Netlify's Site settings → Build & deploy → Deploy contexts
+- Enable "Deploy previews" for "Any pull request against your production branch"
+
+**Issue**: GitHub environment URL doesn't trigger deployment
+- **Solution**: This is expected behavior - GitHub environment URLs are documentation only
+- Actual deployment is handled by Netlify's webhook integration
+
+**Issue**: Want to prevent main branch deployments until tests pass
+- **Solution**: Set up branch protection rules (documented above)
+- Add Playwright tests as required status check
+
+---
+
+## Summary
+
+### Integration Recommendations
+
+✅ **Do This:**
+1. Use Netlify's native GitHub integration (simplest)
+2. Set up GitHub environment with Netlify URL (documentation)
+3. Configure branch protection rules (quality assurance)
+4. Require Playwright tests to pass before merge
+5. Enable Netlify deploy previews for all PRs
+
+❌ **Don't Do This:**
+1. Create GitHub Actions for Netlify deployment (unnecessary)
+2. Store Netlify tokens in GitHub Secrets (not needed)
+3. Manually trigger deployments (Netlify auto-deploys)
+4. Skip branch protection rules (risk of broken production)
+
+### Protection Rules Summary
+
+| Protection Type | Recommended Setting | Purpose |
+|----------------|---------------------|---------|
+| Branch: Pull request reviews | ✅ Required (1 approval) | Code quality gate |
+| Branch: Status checks | ✅ Required (Playwright + Netlify) | Prevent broken deployments |
+| Branch: Conversation resolution | ✅ Required | Ensure feedback is addressed |
+| Environment: Reviewers | ⚠️ Optional | Manual deployment approval |
+| Environment: Deployment branches | ✅ Main only | Prevent accidental deploys |
