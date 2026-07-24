@@ -261,3 +261,52 @@ Commit Changes
 | Stylelint | CSS validation and quality |
 | Linkinator | Broken links and missing assets |
 | Lighthouse CI | SEO, performance, accessibility, and best practices |
+
+---
+
+# Deployment to Netlify
+
+This project is configured for deployment to Netlify using Git integration.
+
+## Automatic Deployment Setup
+
+1. **Sign in to Netlify**
+   - Go to [netlify.com](https://netlify.com) and sign in with your GitHub account
+
+2. **Import Repository**
+   - Click "Add new site" → "Import an existing project"
+   - Choose "Deploy with GitHub"
+   - Authorize Netlify to access your GitHub account
+   - Select the `TVW96/claude-ai-resume` repository
+
+3. **Configure Build Settings**
+   - Netlify will automatically detect the `netlify.toml` configuration file
+   - The following settings are pre-configured:
+     - **Publish directory**: `.` (root directory)
+     - **Build command**: None (static HTML site)
+   - Click "Deploy site"
+
+4. **Deployment Complete**
+   - Netlify will deploy your site and provide a URL (e.g., `https://random-name-123456.netlify.app`)
+   - You can customize the subdomain in Site settings → Domain management
+
+## Continuous Deployment
+
+Once connected, Netlify will automatically:
+- Deploy every push to the `main` branch
+- Create deploy previews for pull requests
+- Show deployment status in GitHub
+
+## Configuration Details
+
+The `netlify.toml` file includes:
+- **Security headers**: X-Frame-Options, X-Content-Type-Options, X-XSS-Protection
+- **Cache control**: Optimized caching for static assets and HTML
+- **Node version**: 20 (for any future build processes)
+
+## Custom Domain (Optional)
+
+To use a custom domain:
+1. Go to Site settings → Domain management
+2. Click "Add custom domain"
+3. Follow the instructions to configure your DNS settings
