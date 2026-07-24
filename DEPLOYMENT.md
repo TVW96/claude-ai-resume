@@ -4,14 +4,14 @@ This project is deployed to multiple platforms:
 
 ## Production URLs
 
-- **Cloudflare Pages**: https://claude-ai-resume.pages.dev
-- **Netlify**: *(Configure your Netlify URL after deployment)*
+- **Cloudflare Workers**: https://claude-ai-resume.troyvw96.workers.dev
+- **Netlify**: https://famous-cascaron-ee40a2.netlify.app
 
 ## Setup
 
-### Cloudflare Pages
-- Automatically deployed via Cloudflare's native Git integration (see [.github/CLOUDFLARE_GIT_INTEGRATION.md](.github/CLOUDFLARE_GIT_INTEGRATION.md))
-- Deploys on every push to `main` branch
+### Cloudflare Workers
+- Automatically deployed via Cloudflare Workers Builds (Git integration) — see [.github/CLOUDFLARE_GIT_INTEGRATION.md](.github/CLOUDFLARE_GIT_INTEGRATION.md)
+- Deploys on every push to `main` branch using `npx wrangler deploy`, serving the static site as Worker assets (`[assets]` in `wrangler.toml`)
 - No GitHub secrets required
 
 ### Netlify

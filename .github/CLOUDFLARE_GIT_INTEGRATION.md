@@ -1,72 +1,48 @@
-# Cloudflare Git Integration Setup
+# Cloudflare Workers Builds (Git Integration) Setup
 
-Cloudflare Pages offers native Git integration that automatically deploys this site directly from GitHub — no GitHub Actions workflow needed. It also provides automatic preview deployments for pull requests.
+This project is a Cloudflare **Workers** application (deployed via `wrangler deploy` with static assets), built and deployed automatically by **Workers Builds** — Cloudflare's native Git integration. No GitHub Actions workflow is involved.
 
-## Benefits of Cloudflare Git Integration
+> **Note:** Despite the project living in the Workers & Pages dashboard, this is *not* a Cloudflare Pages project. The Workers Builds CI pipeline only provisions an API token scoped for Workers deployments, so the deploy command must be `npx wrangler deploy`, never `npx wrangler pages deploy` (that fails with an authentication error).
+
+## Benefits of Workers Builds
 
 - **Automatic Deployments**: Automatically deploys on every push to `main`
-- **Preview Deployments**: Automatic preview deployments for every pull request
+- **Preview Deployments**: Automatic preview builds for every pull request (via `wrangler versions upload`)
 - **Build Logs**: View build and deployment logs directly in the Cloudflare Dashboard
 - **Deployment History**: Track all deployments with rollback capability
 - **Zero Configuration**: No workflow files needed
 
-## Setup Instructions
+## Project Configuration
 
-1. **Navigate to Cloudflare Pages**
-   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
-   - Select "Workers & Pages" from the left sidebar
-   - Click "Create application" → "Pages" → "Connect to Git"
+- Repository: `TVW96/claude-ai-resume`
+- Production branch: `main`
+- Build command: (none needed)
+- **Deploy command (production branch): `npx wrangler deploy`**
+- Static assets are served directly from the repo root via the `[assets]` block in `wrangler.toml` — no entry-point script required
 
-2. **Connect GitHub Account**
-   - Click "Connect GitHub"
-   - Authorize Cloudflare Pages to access your GitHub account
-   - Select the repositories you want to give Cloudflare access to
-     - You can choose "All repositories" or "Only select repositories"
-     - For security, it's recommended to only select specific repositories
+## Verify Deployment
 
-3. **Configure the Project**
-   - Select repository: `TVW96/claude-ai-resume`
-   - Project name: `claude-ai-resume`
-   - Production branch: `main`
-   - Build settings:
-     - Framework preset: `None` (static site)
-     - Build command / Deploy command: `npx wrangler pages deploy .`
-     - Build output directory: `/` (root directory)
-     - Root directory: `/`
-
-4. **Environment Variables** (Optional)
-   - No environment variables needed for this static site
-
-5. **Deploy**
-   - Click "Save and Deploy"
-   - Cloudflare will immediately start building and deploying your site
-   - First deployment takes 1-2 minutes
-
-6. **Verify Deployment**
-   - Once complete, you'll see your site URL: `https://claude-ai-resume.pages.dev`
-   - Click the URL to view your deployed resume
+Once complete, the site is available at your Workers subdomain, e.g. `https://claude-ai-resume.troyvw96.workers.dev`.
 
 ## Production Environment
 
-Both Cloudflare Pages and Netlify deploy from the same `main` branch and are tracked under a single GitHub `production` environment (Settings → Environments → `production`) so both live URLs are visible from the repository. No GitHub secrets are required for either platform since deployments are driven entirely by each platform's own Git integration.
+Both this Cloudflare Worker and Netlify deploy from the same `main` branch and are tracked under a single GitHub `production` environment (Settings → Environments → `production`) so both live URLs are visible from the repository. No GitHub secrets are required for either platform since deployments are driven entirely by each platform's own Git integration.
 
 ## Preview Deployments
 
-When using Cloudflare Git integration:
-- Every pull request automatically gets a preview deployment
-- Preview URL format: `https://<commit-hash>.claude-ai-resume.pages.dev`
-- Preview deployments are automatically deleted when PRs are closed
+When using Workers Builds:
+- Every pull request automatically gets a preview build (`wrangler versions upload`)
+- Preview deployments are managed from the Cloudflare Dashboard
 - No additional configuration needed
 
 ## Custom Domains
 
 After setup, you can add custom domains:
-1. Go to your project in Cloudflare Pages
-2. Click "Custom domains" tab
-3. Click "Set up a custom domain"
-4. Enter your domain (e.g., `resume.troywashington.com`)
-5. Follow DNS configuration instructions
-6. Cloudflare automatically provisions SSL certificate
+1. Go to your project in Cloudflare Dashboard → Workers & Pages
+2. Click "Domains & Routes"
+3. Add a custom domain (e.g., `resume.troywashington.com`)
+4. Follow DNS configuration instructions
+5. Cloudflare automatically provisions SSL certificate
 
 ## Rollback Deployments
 
@@ -86,6 +62,7 @@ Once deployed, you can:
 
 ## Support and Troubleshooting
 
-- [Cloudflare Pages Documentation](https://developers.cloudflare.com/pages/)
-- [Git Integration Guide](https://developers.cloudflare.com/pages/platform/git-integration/)
-- [Deployment Configuration](https://developers.cloudflare.com/pages/platform/build-configuration/)
+- **Authentication error on deploy:** Deploy command must be `npx wrangler deploy`, not `npx wrangler pages deploy` (Workers Builds tokens aren't scoped for the Pages API)
+- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
+- [Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/)
+- [Workers Builds (Git Integration)](https://developers.cloudflare.com/workers/ci-cd/builds/)
