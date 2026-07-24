@@ -52,9 +52,9 @@ Both deployments are tracked under a single GitHub `production` environment (Set
 ## 🛠️ Troubleshooting
 
 ### Cloudflare Deployment Failures
+- **Pages API / “Project not found” error:** This repository deploys as a Cloudflare Worker, not a Cloudflare Pages project. Do not use `cloudflare/pages-action` or `npx wrangler pages deploy`; use Workers Builds or `npx wrangler deploy` instead.
 - **Authentication error / `10000`:** Deploy command must be `npx wrangler deploy`, not `npx wrangler pages deploy` — the Workers Builds CI token is scoped only for Workers, not the Pages API
 - **Missing entry-point / assets error:** Confirm `wrangler.toml` has an `[assets]` block with `directory = "."` (not a legacy `[site]` block or `pages_build_output_dir`)
-- **Project not found:** Confirm the project exists in the correct Cloudflare account and the name matches exactly
 
 ### Netlify Deployment Failures
 - Check build settings against [`netlify.toml`](../netlify.toml)

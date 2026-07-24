@@ -62,6 +62,7 @@ Once deployed, you can:
 
 ## Support and Troubleshooting
 
+- **Pages API / “Project not found” errors:** This repository is a Cloudflare Worker, not a Cloudflare Pages project. Do not use `cloudflare/pages-action` or `npx wrangler pages deploy`; deploy with Workers Builds or `npx wrangler deploy` instead.
 - **Authentication error on deploy:** Deploy command must be `npx wrangler deploy`, not `npx wrangler pages deploy` (Workers Builds tokens aren't scoped for the Pages API)
 - [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
 - [Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/)
