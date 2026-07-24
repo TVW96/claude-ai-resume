@@ -1,3 +1,8 @@
+
+
+
+https://github.com/user-attachments/assets/93975e3b-bb6f-40ae-962a-43e05c8a7f8a
+
 # Deployment Configuration
 
 This directory contains deployment documentation for the claude-ai-resume project.
