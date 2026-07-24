@@ -1,6 +1,6 @@
 name = "claude-ai-resume"
 compatibility_date = "2024-01-01"
 
-# Static assets deployed directly by the Worker (no entry-point script needed)
-[assets]
-directory = "."
+# Cloudflare Pages configuration - required since the deploy command
+# ("npx wrangler pages deploy") is run without a directory argument
+pages_build_output_dir = "."
