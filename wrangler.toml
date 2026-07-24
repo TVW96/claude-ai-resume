@@ -1,0 +1,12 @@
+name = "claude-ai-resume"
+compatibility_date = "2024-01-01"
+
+# Cloudflare Pages configuration
+pages_build_output_dir = "."
+
+[site]
+bucket = "."
+
+# Define the routes
+[[pages.routes]]
+pattern = "/*"

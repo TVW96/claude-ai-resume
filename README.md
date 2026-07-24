@@ -2,7 +2,11 @@
 
 https://github.com/user-attachments/assets/6b26080d-e2ca-4f8e-8c05-fbeaa43a9cad
 
+## Deployment
 
+This project is configured for automatic deployment to Cloudflare Pages. See [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md) for setup instructions.
+
+---
 
 # Project Dependencies
 
