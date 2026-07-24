@@ -76,7 +76,7 @@ a:hover { color: var(--accent-2); }
   width: 1px;
   height: 1px;
   overflow: hidden;
-  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 
@@ -381,7 +381,6 @@ main {
   .section-nav ul {
     overflow-x: auto;
     -ms-overflow-style: none;
-    scrollbar-width: none;
   }
   .section-nav ul::-webkit-scrollbar { display: none; }
 }
@@ -394,11 +393,11 @@ main {
 }
 
 /* ---------- Motion ---------- */
-@media (prefers-reduced-motion: reduce) {
-  * { scroll-behavior: auto !important; }
-}
 html {
   scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
 /* ---------- Print ---------- */
