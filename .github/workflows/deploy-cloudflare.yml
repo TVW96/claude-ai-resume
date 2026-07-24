@@ -9,8 +9,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Production environment includes both deployment URLs:
+    # - Cloudflare Pages: https://claude-ai-resume.pages.dev
+    # - Netlify: Configure in GitHub Settings > Environments > production
     environment:
-      name: cloudflare-production
+      name: production
       url: https://claude-ai-resume.pages.dev
     permissions:
       contents: read
