@@ -25,3 +25,28 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+  track-production-deployments:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - provider: Cloudflare Workers
+            url: https://claude-ai-resume.troyvw96.workers.dev
+          - provider: Netlify
+            url: https://famous-cascaron-ee40a2.netlify.app
+    name: Track ${{ matrix.provider }} production deployment
+    environment:
+      name: production
+      url: ${{ matrix.url }}
+    steps:
+    - name: Verify deployment URL responds
+      run: |
+        curl --fail --silent --show-error --location \
+          --retry 20 \
+          --retry-delay 15 \
+          --retry-all-errors \
+          "${{ matrix.url }}"

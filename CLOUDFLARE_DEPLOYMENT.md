@@ -1,12 +1,12 @@
 # Cloudflare Workers Deployment Guide
 
-This project deploys automatically to Cloudflare via **Workers Builds** (Cloudflare's native Git integration) — no GitHub Actions workflow is involved. It runs as a Cloudflare Worker serving static assets (`[assets]` in `wrangler.toml`), not a Cloudflare Pages project.
+This project deploys automatically to Cloudflare via **Workers Builds** (Cloudflare's native Git integration). GitHub Actions tracks the production URLs in the repository environment, but it does not deploy the Worker itself. It runs as a Cloudflare Worker serving static assets (`[assets]` in `wrangler.toml`), not a Cloudflare Pages project.
 
 📄 See [Cloudflare Git Integration Guide](.github/CLOUDFLARE_GIT_INTEGRATION.md) for full setup instructions.
 
 ## Production Environment
 
-Both this Cloudflare Worker and Netlify deploy from `main` and are tracked under a single GitHub `production` environment (Settings → Environments → `production`), which lists both live URLs. No GitHub secrets are required for either platform.
+Both this Cloudflare Worker and Netlify deploy from `main` and are tracked under a single GitHub `production` environment (Settings → Environments → `production`), which lists both live URLs. The `Playwright Tests` workflow records one production deployment entry per platform after tests pass on `main`, and no GitHub secrets are required for either platform.
 
 ---
 

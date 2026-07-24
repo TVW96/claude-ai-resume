@@ -21,6 +21,6 @@ This project is deployed to multiple platforms:
 
 ## GitHub Environment
 
-Both deployment URLs are documented in a single `production` environment:
+Both deployment URLs are tracked in a single `production` environment:
 - Go to: Repository Settings → Environments → `production`
-- This environment tracks both the Cloudflare and Netlify deployments for this project
+- The `Playwright Tests` workflow records one successful production deployment for Cloudflare Workers and one for Netlify after `main` branch tests pass
